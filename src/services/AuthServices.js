@@ -32,7 +32,7 @@ const loginNhanVien = async (data) => {
   }
 
   const token = jwt.sign(
-    { id: nhanVien.id, Email: nhanVien.Email },
+    { id: nhanVien.id, Email: nhanVien.Email,role: nhanVien.role },
     "secret_key",
     { expiresIn: "1h" }
   );
@@ -42,7 +42,8 @@ const loginNhanVien = async (data) => {
     user: {
       id: nhanVien.id,
       Email: nhanVien.Email,
-      HoTen: nhanVien.HoTen
+      HoTen: nhanVien.HoTen,
+      role: nhanVien.role
     }
   };
 };

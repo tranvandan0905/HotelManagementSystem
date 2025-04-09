@@ -13,10 +13,13 @@ const getAllNhanvienController = async (req, res) => {
   }
 };
 const createNhanvienController = async (req, res) => {
-  const { HoTen, SDT, CCCD, GioiTinh, Email, Password, Luong, id_chinhanh, id_vitri } = req.body;
-  console.log(req.body)
+  const { HoTen, SDT, CCCD, GioiTinh, Email, Password, Luong,Role, id_chinhanh, id_vitri } = req.body;
+  const existingNhanVien = await NhanVien.findOne({ where: { Email } });
+  if (existingNhanVien) {
+    throw new Error("Email đã tồn tại");
+  }
   try {
-    const newNhanVien = await createNhanvien(HoTen, SDT, CCCD, GioiTinh, Email, Password, Luong, id_chinhanh, id_vitri);
+    const newNhanVien = await createNhanvien(HoTen, SDT, CCCD, GioiTinh, Email,Role, Password, Luong, id_chinhanh, id_vitri);
     res.status(201).json({ message: "Thêm nhân viên thành công", nhanVien: newNhanVien });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -24,9 +27,9 @@ const createNhanvienController = async (req, res) => {
 };
 const updateNhanvienController = async (req, res) => {
   const { id } = req.params;
-  const { HoTen, SDT, CCCD, GioiTinh, Email, Password, Luong, id_chiNhanh, id_viTri } = req.body;
+  const { HoTen, SDT, CCCD, GioiTinh, Email, Password, Luong,Role, id_chiNhanh, id_viTri } = req.body;
   try {
-    const updatedNhanVien = await updateNhanvien(id, HoTen, SDT, CCCD, GioiTinh, Email, Password, Luong, id_chiNhanh, id_viTri);
+    const updatedNhanVien = await updateNhanvien(id, HoTen, SDT, CCCD, GioiTinh, Email, Password,Role, Luong, id_chiNhanh, id_viTri);
     res.json({ message: "Cập nhật nhân viên thành công", nhanVien: updatedNhanVien });
   } catch (error) {
     res.status(500).json({ message: error.message });

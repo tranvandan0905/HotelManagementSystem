@@ -12,6 +12,7 @@ const NhanVien = sequelize.define(
     Email: { type: DataTypes.STRING, allowNull: false },
     Password: { type: DataTypes.STRING, allowNull: false },
     Luong: { type: DataTypes.INTEGER, allowNull: false },
+    Role: { type: DataTypes.STRING, allowNull: false },
   },
   { tableName: "nhanvien", timestamps: false }
 );
