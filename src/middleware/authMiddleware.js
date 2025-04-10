@@ -8,6 +8,7 @@ const authenticate = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, "secret_key");
     req.user = decoded;
+    console.log(req.user);
     next();
   } catch (err) {
     res.status(401).json({ message: "Token không hợp lệ" });
@@ -15,11 +16,14 @@ const authenticate = (req, res, next) => {
 };
 
 // Middleware phân quyền
-const withRole = (...roles) => (req, res, next) => {
-  if (!req.user || !roles.includes(req.user.role)) {
-    return res.status(403).json({ message: "Không có quyền truy cập" });
-  }
-  next();
-};
+const withRole =
+  (...roles) =>
+  (req, res, next) => {
+    console.log(req.user);
+    if (!req.user || !roles.includes(req.user.Role)) {
+      return res.status(403).json({ message: "Không có quyền truy cập" });
+    }
+    next();
+  };
 
 module.exports = { authenticate, withRole };
