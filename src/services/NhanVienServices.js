@@ -9,17 +9,26 @@ const getAllNhanvien = async () => {
   }
 };
 
-const createNhanvien = async (HoTen, SDT, CCCD, GioiTinh, Email, Password, Luong, id_chinhanh, id_vitri) => {
+const createNhanvien = async (
+  HoTen,
+  SDT,
+  CCCD,
+  GioiTinh,
+  Email,
+  Password,
+  Luong,
+  Role,
+  id_chinhanh
+) => {
   try {
-    console.log("Dữ liệu nhận được:", { HoTen, SDT, CCCD, GioiTinh, Email, Password, Luong, id_chinhanh, id_vitri });
-
-    if (!id_chinhanh || !id_vitri) {
-      throw new Error("Lỗi: id_chiNhanh và id_viTri không được để trống!");
+    if (!id_chinhanh) {
+      throw new Error("Lỗi: id_chinhanh không được để trống!");
     }
 
-    const hashedPassword = await bcrypt.hash(Password, 10);
-    console.log("Hashed Password:", hashedPassword);
+    const luong = parseFloat(Luong);
+    const role = String(Role);
 
+    const hashedPassword = await bcrypt.hash(Password, 10);
     const newNhanVien = await NhanVien.create({
       HoTen,
       SDT,
@@ -27,12 +36,10 @@ const createNhanvien = async (HoTen, SDT, CCCD, GioiTinh, Email, Password, Luong
       GioiTinh,
       Email,
       Password: hashedPassword,
-      Luong,
+      Luong: luong, // Lưu 'Luong' với kiểu dữ liệu đúng
+      Role: role, // Lưu 'Role' với kiểu dữ liệu đúng
       id_chinhanh,
-      id_vitri,
     });
-
-    console.log("Nhân viên tạo thành công:", newNhanVien);
     return newNhanVien;
   } catch (error) {
     console.error("Lỗi khi thêm nhân viên:", error);
@@ -40,12 +47,24 @@ const createNhanvien = async (HoTen, SDT, CCCD, GioiTinh, Email, Password, Luong
   }
 };
 
+// file gốc anh mới clone về à sao khác nhiều vậy triwif
+// a clone cái mới của e về
 
-const updateNhanvien = async (id, HoTen, SDT, CCCD, GioiTinh, Email, Password, Luong, id_chiNhanh, id_viTri) => {
+const updateNhanvien = async (
+  id,
+  HoTen,
+  SDT,
+  CCCD,
+  GioiTinh,
+  Email,
+  Password,
+  Luong,
+  Role,
+  id_chiNhanh
+) => {
   try {
     const nhanVien = await NhanVien.findByPk(id);
     if (!nhanVien) {
-      throw new Error("Nhân viên không tồn tại");
     }
 
     let hashedPassword = nhanVien.Password;
@@ -61,8 +80,8 @@ const updateNhanvien = async (id, HoTen, SDT, CCCD, GioiTinh, Email, Password, L
       Email,
       Password: hashedPassword,
       Luong,
+      Role,
       id_chiNhanh,
-      id_viTri,
     });
 
     return nhanVien;
