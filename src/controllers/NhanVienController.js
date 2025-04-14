@@ -56,7 +56,7 @@ const createNhanvienController = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
+// cái khúc them này có bị lỗi k chia ra services
 const updateNhanvienController = async (req, res) => {
   const { id } = req.params;
   const {

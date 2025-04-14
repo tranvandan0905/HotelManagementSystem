@@ -5,7 +5,7 @@ const {
   updatePhong,
   deletePhong,
 } = require("../services/PhongServices");
-const {deleteImage,saveImage}=require("../services/ImgesServices")
+const { deleteImage, saveImage } = require("../services/ImgesServices");
 const getAllPhongController = async (req, res) => {
   try {
     const phongs = await getAllPhong();
@@ -25,9 +25,17 @@ const getPhongByIdController = async (req, res) => {
 };
 const createPhongController = async (req, res) => {
   const { SoPhong, Loai, Tang, Gia, TrangThai, id_chinhanh } = req.body;
-  const file = req.files ? req.files.HinhAnh : null; 
+  const file = req.files ? req.files.HinhAnh : null;
   try {
-    const newPhong = await createPhong(SoPhong, Loai, Tang,  Gia, TrangThai, id_chinhanh, file);
+    const newPhong = await createPhong(
+      SoPhong,
+      Loai,
+      Tang,
+      Gia,
+      TrangThai,
+      id_chinhanh,
+      file
+    );
     res.status(201).json(newPhong);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -45,10 +53,10 @@ const updatePhongController = async (req, res) => {
       return res.status(404).json({ message: "Phòng không tồn tại" });
     }
 
-    let imageName = existingPhong.HinhAnh; 
+    let imageName = existingPhong.HinhAnh;
     if (file) {
-      await deleteImage(existingPhong.HinhAnh); 
-      imageName = await saveImage(file); 
+      await deleteImage(existingPhong.HinhAnh);
+      imageName = await saveImage(file);
     }
     const updatedPhong = await updatePhong(
       id,
@@ -57,7 +65,7 @@ const updatePhongController = async (req, res) => {
       Tang,
       Gia,
       TrangThai,
-      imageName, 
+      imageName,
       id_chinhanh
     );
 
@@ -66,7 +74,6 @@ const updatePhongController = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 const deletePhongController = async (req, res) => {
   const { id } = req.params;

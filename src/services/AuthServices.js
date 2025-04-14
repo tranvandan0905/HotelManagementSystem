@@ -46,17 +46,10 @@ const loginNhanVien = async (data) => {
     throw new Error("Email không tồn tại");
   }
   const isPasswordValid = await bcrypt.compare(Password, nhanVien.Password);
-  console.log("isPasswordValid", isPasswordValid);
-  console.log("nhanVien.Password", nhanVien.Password);
-
   if (!isPasswordValid) {
     throw new Error("Mật khẩu không đúng");
   }
 
-  // 🔥 Thay đoạn này để so sánh password trực tiếp (test mode)
-  //  ? if (Password !== nhanVien.Password) {
-  //     throw new Error("Mật khẩu không đúng");
-  //   }
   const payload = {
     id: nhanVien.id,
     Email: nhanVien.Email,

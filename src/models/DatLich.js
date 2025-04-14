@@ -13,6 +13,7 @@ const DatLich = sequelize.define(
     NgayNhan: { type: DataTypes.DATE, allowNull: false },
     NgayTra: { type: DataTypes.DATE, allowNull: false },
     TongTien: { type: DataTypes.INTEGER, allowNull: false },
+    Check: { type: DataTypes.BOOLEAN, defaultValue: false }, // thêm trường Check
   },
   { tableName: "datlich", timestamps: false }
 );
