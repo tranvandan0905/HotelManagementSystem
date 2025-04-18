@@ -87,21 +87,14 @@ routerAPI.delete(
 );
 // dat lich
 routerAPI.use("/datlich", datlichTesting);
+
 routerAPI.get(
   "/datlich/:id",
   withRole("NhanVien", "Admin"),
   getDatLichByIdController
 );
-routerAPI.post(
-  "/datlich",
-  withRole("NhanVien", "Admin"),
-  createDatLichController
-);
-routerAPI.put(
-  "/datlich/:id",
-  withRole("NhanVien", "Admin"),
-  updateDatLichController
-);
+routerAPI.post("/datlich", createDatLichController);
+routerAPI.put("/datlich/:id", updateDatLichController);
 routerAPI.delete(
   "/datlich/:id",
   withRole("NhanVien", "Admin"),
