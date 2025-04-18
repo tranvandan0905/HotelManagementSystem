@@ -82,12 +82,13 @@ const updateDatLich = async (
     if (!datlich) {
       throw new Error("Booking not found");
     }
-
-    const phong = await Phong.findOne({ where: { id: id_phong } });
-    if (!phong) {
-      throw new Error("Phong not found");
+    console.log("datlich", datlich);
+    if (id_phong) {
+      const phong = await Phong.findOne({ where: { id: id_phong } });
+      if (!phong) {
+        throw new Error("Phong not found");
+      }
     }
-
     datlich.HoTen = HoTen || datlich.HoTen;
     datlich.SDT = SDT || datlich.SDT;
     datlich.email = email || datlich.email;
@@ -97,7 +98,7 @@ const updateDatLich = async (
     datlich.TongTien = TongTien || datlich.TongTien;
     datlich.id_phong = id_phong || datlich.id_phong;
     datlich.SoNguoi = SoNguoi || datlich.SoNguoi;
-    datlich.Check = Check !== undefined ? Check : datlich.Check;
+    datlich.Check = Check || datlich.Check;
     await datlich.save();
     return datlich;
   } catch (error) {

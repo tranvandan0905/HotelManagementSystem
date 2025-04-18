@@ -6,7 +6,7 @@ const {
   deleteDatLich,
 } = require("../services/DatLichServices");
 //vua them
-const { validationResult } = require("express-validator");
+const { validationResult, check } = require("express-validator");
 // vua them
 const getAllDatLichController = async (req, res) => {
   try {
@@ -28,7 +28,7 @@ const getDatLichByIdController = async (req, res) => {
 const createDatLichController = async (req, res) => {
   const errors = validationResult(req.body);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() }); // 👈 gửi lỗi về client
+    return res.status(400).json({ errors: errors.array() });
   }
   const {
     HoTen,
@@ -56,18 +56,16 @@ const createDatLichController = async (req, res) => {
     );
     res.status(201).json(newDatLich);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("UPDATE ERROR:", error.message);
+    throw new Error(error.message);
   }
 };
 const updateDatLichController = async (req, res) => {
-  //
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  //
-
-  const { id } = req.params;
+  const id = req.params.id;
   const {
     HoTen,
     SDT,
@@ -78,7 +76,10 @@ const updateDatLichController = async (req, res) => {
     SoNguoi,
     TongTien,
     id_phong,
+    Check,
   } = req.body;
+  console.log(req.body);
+  console.log(id);
   try {
     const updatedDatLich = await updateDatLich(
       id,
@@ -86,11 +87,12 @@ const updateDatLichController = async (req, res) => {
       SDT,
       email,
       GioiTinh,
-      SoNguoi,
       NgayNhan,
+      SoNguoi,
       NgayTra,
       TongTien,
-      id_phong
+      id_phong,
+      Check
     );
     res.status(200).json(updatedDatLich);
   } catch (error) {
