@@ -25,6 +25,7 @@ const getDatLichById = async (id) => {
     throw new Error("Error fetching booking");
   }
 };
+
 const createDatLich = async (
   HoTen,
   SDT,
@@ -39,7 +40,9 @@ const createDatLich = async (
 ) => {
   try {
     const phong = await Phong.findOne({ where: { id: id_phong } });
-    if (!phong) throw new Error("Phong not found");
+    if (!phong) {
+      throw new Error("Phong not found");
+    }
 
     const newDatLich = await DatLich.create({
       HoTen,
@@ -51,15 +54,16 @@ const createDatLich = async (
       SoNguoi,
       TongTien,
       id_phong,
-      Check, // ✅ THÊM VÀO
+      Check,
     });
 
     return newDatLich;
   } catch (error) {
-    console.error("LỖI TẠO ĐẶT LỊCH:", error);
+    console.error("LỖI TẠO DATLICH:", error);
     throw new Error(error.message);
   }
 };
+
 const updateDatLich = async (
   id,
   HoTen,
@@ -70,7 +74,8 @@ const updateDatLich = async (
   SoNguoi,
   NgayTra,
   TongTien,
-  id_phong
+  id_phong,
+  Check
 ) => {
   try {
     const datlich = await DatLich.findOne({ where: { id } });
@@ -92,6 +97,7 @@ const updateDatLich = async (
     datlich.TongTien = TongTien || datlich.TongTien;
     datlich.id_phong = id_phong || datlich.id_phong;
     datlich.SoNguoi = SoNguoi || datlich.SoNguoi;
+    datlich.Check = Check !== undefined ? Check : datlich.Check;
     await datlich.save();
     return datlich;
   } catch (error) {
